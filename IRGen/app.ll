@@ -3,55 +3,49 @@ source_filename = "app.cpp"
 target datalayout = "e-m:w-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-w64-windows-gnu"
 
-; Function Attrs: mustprogress uwtable
+; Function Attrs: mustprogress noreturn uwtable
 define dso_local void @_Z3appv() local_unnamed_addr #0 {
-  br label %2
+  br label %1
 
-1:                                                ; preds = %12
-  ret void
+1:                                                ; preds = %10, %0
+  %2 = phi i32 [ 0, %0 ], [ %5, %10 ]
+  %3 = add nsw i32 %2, 1
+  %4 = icmp sgt i32 %2, 511
+  %5 = select i1 %4, i32 0, i32 %3
+  %6 = mul nsw i32 %5, %5
+  br label %7
 
-2:                                                ; preds = %0, %12
-  %3 = phi i32 [ 0, %0 ], [ %7, %12 ]
-  %4 = phi i32 [ 0, %0 ], [ %13, %12 ]
-  %5 = add nsw i32 %3, 1
-  %6 = icmp sgt i32 %3, 511
-  %7 = select i1 %6, i32 0, i32 %5
-  %8 = mul nsw i32 %7, %7
-  br label %9
+7:                                                ; preds = %1, %11
+  %8 = phi i32 [ 0, %1 ], [ %12, %11 ]
+  %9 = mul nuw nsw i32 %8, %8
+  br label %14
 
-9:                                                ; preds = %2, %15
-  %10 = phi i32 [ 0, %2 ], [ %16, %15 ]
-  %11 = mul nuw nsw i32 %10, %10
-  br label %18
-
-12:                                               ; preds = %15
+10:                                               ; preds = %11
   tail call void @_Z8simFlushv()
-  %13 = add nuw nsw i32 %4, 1
-  %14 = icmp eq i32 %13, 100000
-  br i1 %14, label %1, label %2, !llvm.loop !5
+  br label %1, !llvm.loop !5
 
-15:                                               ; preds = %18
-  %16 = add nuw nsw i32 %10, 1
-  %17 = icmp eq i32 %16, 512
-  br i1 %17, label %12, label %9, !llvm.loop !7
+11:                                               ; preds = %14
+  %12 = add nuw nsw i32 %8, 1
+  %13 = icmp eq i32 %12, 512
+  br i1 %13, label %10, label %7, !llvm.loop !7
 
-18:                                               ; preds = %9, %18
-  %19 = phi i32 [ 0, %9 ], [ %24, %18 ]
-  %20 = mul nuw nsw i32 %19, %19
-  %21 = add nuw nsw i32 %20, %11
-  %22 = icmp ult i32 %21, %8
-  %23 = select i1 %22, i32 -1, i32 -16777216
-  tail call void @_Z11simPutPixeliii(i32 noundef %19, i32 noundef %10, i32 noundef %23)
-  %24 = add nuw nsw i32 %19, 1
-  %25 = icmp eq i32 %24, 512
-  br i1 %25, label %15, label %18, !llvm.loop !8
+14:                                               ; preds = %7, %14
+  %15 = phi i32 [ 0, %7 ], [ %20, %14 ]
+  %16 = mul nuw nsw i32 %15, %15
+  %17 = add nuw nsw i32 %16, %9
+  %18 = icmp ult i32 %17, %6
+  %19 = select i1 %18, i32 -1, i32 -16777216
+  tail call void @_Z11simPutPixeliii(i32 noundef %15, i32 noundef %8, i32 noundef %19)
+  %20 = add nuw nsw i32 %15, 1
+  %21 = icmp eq i32 %20, 512
+  br i1 %21, label %11, label %14, !llvm.loop !8
 }
 
 declare dso_local void @_Z11simPutPixeliii(i32 noundef, i32 noundef, i32 noundef) local_unnamed_addr #1
 
 declare dso_local void @_Z8simFlushv() local_unnamed_addr #1
 
-attributes #0 = { mustprogress uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+attributes #0 = { mustprogress noreturn uwtable "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
 attributes #1 = { "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
 
 !llvm.module.flags = !{!0, !1, !2, !3}

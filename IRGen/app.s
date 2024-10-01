@@ -15,80 +15,64 @@
 _Z3appv:                                # @_Z3appv
 .seh_proc _Z3appv
 # %bb.0:
-	subq	$72, %rsp
-	.seh_stackalloc 72
+	pushq	%r15
+	.seh_pushreg %r15
+	pushq	%r14
+	.seh_pushreg %r14
+	pushq	%rsi
+	.seh_pushreg %rsi
+	pushq	%rdi
+	.seh_pushreg %rdi
+	pushq	%rbp
+	.seh_pushreg %rbp
+	pushq	%rbx
+	.seh_pushreg %rbx
+	subq	$40, %rsp
+	.seh_stackalloc 40
 	.seh_endprologue
-	movl	$0, 52(%rsp)
-	movl	$0, 56(%rsp)
+	xorl	%ebx, %ebx
+	xorl	%r14d, %r14d
+	.p2align	4, 0x90
 .LBB0_1:                                # =>This Loop Header: Depth=1
-                                        #     Child Loop BB0_5 Depth 2
-                                        #       Child Loop BB0_7 Depth 3
-	cmpl	$100000, 56(%rsp)               # imm = 0x186A0
-	jge	.LBB0_16
-# %bb.2:                                #   in Loop: Header=BB0_1 Depth=1
-	movl	52(%rsp), %eax
-	addl	$1, %eax
-	movl	%eax, 52(%rsp)
-	cmpl	$512, 52(%rsp)                  # imm = 0x200
-	jle	.LBB0_4
-# %bb.3:                                #   in Loop: Header=BB0_1 Depth=1
-	movl	$0, 52(%rsp)
-.LBB0_4:                                #   in Loop: Header=BB0_1 Depth=1
-	movl	$0, 48(%rsp)
-.LBB0_5:                                #   Parent Loop BB0_1 Depth=1
+                                        #     Child Loop BB0_2 Depth 2
+                                        #       Child Loop BB0_3 Depth 3
+	cmpl	$512, %r14d                     # imm = 0x200
+	leal	1(%r14), %eax
+	movl	%eax, %r14d
+	cmovgel	%ebx, %r14d
+	movl	%r14d, %ebp
+	imull	%r14d, %ebp
+	xorl	%esi, %esi
+	.p2align	4, 0x90
+.LBB0_2:                                #   Parent Loop BB0_1 Depth=1
                                         # =>  This Loop Header: Depth=2
-                                        #       Child Loop BB0_7 Depth 3
-	cmpl	$512, 48(%rsp)                  # imm = 0x200
-	jge	.LBB0_14
-# %bb.6:                                #   in Loop: Header=BB0_5 Depth=2
-	movl	$0, 44(%rsp)
-.LBB0_7:                                #   Parent Loop BB0_1 Depth=1
-                                        #     Parent Loop BB0_5 Depth=2
+                                        #       Child Loop BB0_3 Depth 3
+	movl	%esi, %r15d
+	imull	%esi, %r15d
+	xorl	%edi, %edi
+	.p2align	4, 0x90
+.LBB0_3:                                #   Parent Loop BB0_1 Depth=1
+                                        #     Parent Loop BB0_2 Depth=2
                                         # =>    This Inner Loop Header: Depth=3
-	cmpl	$512, 44(%rsp)                  # imm = 0x200
-	jge	.LBB0_12
-# %bb.8:                                #   in Loop: Header=BB0_7 Depth=3
-	movl	44(%rsp), %eax
-	imull	44(%rsp), %eax
-	movl	%eax, 68(%rsp)
-	movl	48(%rsp), %eax
-	imull	48(%rsp), %eax
-	movl	%eax, 64(%rsp)
-	movl	$-16777216, 60(%rsp)            # imm = 0xFF000000
-	movl	68(%rsp), %eax
-	addl	64(%rsp), %eax
-	movl	52(%rsp), %ecx
-	imull	52(%rsp), %ecx
-	cmpl	%ecx, %eax
-	jge	.LBB0_10
-# %bb.9:                                #   in Loop: Header=BB0_7 Depth=3
-	movl	$-1, 60(%rsp)
-.LBB0_10:                               #   in Loop: Header=BB0_7 Depth=3
-	movl	44(%rsp), %ecx
-	movl	48(%rsp), %edx
-	movl	60(%rsp), %r8d
+	movl	%edi, %eax
+	imull	%edi, %eax
+	addl	%r15d, %eax
+	cmpl	%ebp, %eax
+	movl	$0, %r8d
+	sbbl	%r8d, %r8d
+	orl	$-16777216, %r8d                # imm = 0xFF000000
+	movl	%edi, %ecx
+	movl	%esi, %edx
 	callq	_Z11simPutPixeliii
-# %bb.11:                               #   in Loop: Header=BB0_7 Depth=3
-	movl	44(%rsp), %eax
-	addl	$1, %eax
-	movl	%eax, 44(%rsp)
-	jmp	.LBB0_7
-.LBB0_12:                               #   in Loop: Header=BB0_5 Depth=2
-	jmp	.LBB0_13
-.LBB0_13:                               #   in Loop: Header=BB0_5 Depth=2
-	movl	48(%rsp), %eax
-	addl	$1, %eax
-	movl	%eax, 48(%rsp)
-	jmp	.LBB0_5
-.LBB0_14:                               #   in Loop: Header=BB0_1 Depth=1
+	incl	%edi
+	cmpl	$512, %edi                      # imm = 0x200
+	jne	.LBB0_3
+# %bb.4:                                #   in Loop: Header=BB0_2 Depth=2
+	incl	%esi
+	cmpl	$512, %esi                      # imm = 0x200
+	jne	.LBB0_2
+# %bb.5:                                #   in Loop: Header=BB0_1 Depth=1
 	callq	_Z8simFlushv
-# %bb.15:                               #   in Loop: Header=BB0_1 Depth=1
-	movl	56(%rsp), %eax
-	addl	$1, %eax
-	movl	%eax, 56(%rsp)
 	jmp	.LBB0_1
-.LBB0_16:
-	addq	$72, %rsp
-	retq
 	.seh_endproc
                                         # -- End function

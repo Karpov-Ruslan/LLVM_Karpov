@@ -3,7 +3,7 @@
 void app() {
     int radius = 0;
 
-    for (int step = 0; step < 100000; ++step) {
+    while(1) {
         ++radius;
         if (radius > SIM_SIZE) {
             radius = 0;
